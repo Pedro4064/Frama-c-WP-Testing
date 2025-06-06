@@ -24,6 +24,7 @@ int sum(int *values, unsigned int length) {
     /*@
         loop invariant 0 <= i <= length;
         loop invariant result == (i == 0 ? 0 : sum_to_index(values, i - 1));
+        loop invariant result <= i * 3000;
         loop assigns result, i;
         loop variant length - i;
     */
