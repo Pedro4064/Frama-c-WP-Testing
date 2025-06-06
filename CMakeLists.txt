@@ -14,6 +14,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(SRC_FILES 
     ${CMAKE_SOURCE_DIR}/src/main.c 
     ${CMAKE_SOURCE_DIR}/src/abs.c
+    ${CMAKE_SOURCE_DIR}/src/loop_invariants.c
     )
 set(
     INCLUDE_DIR 
@@ -29,8 +30,16 @@ add_executable(main ${SRC_FILES})
 target_include_directories(main PUBLIC ${INCLUDE_DIR})
 
 ## Verification Command
+# If it fails you may need to init OPAM again: 
+# opam init && eval $(opam env)
 add_custom_target(
     verify
     COMMAND frama-c-gui -json-compilation-database ${COMPILE_COMMANDS_JSON_PATH} ${SRC_FILES} -wp -wp-rte
+    COMMENT "Running Frama-C wp and rte plugins on all files built"
+    )
+
+add_custom_target(
+    verify_cli
+    COMMAND frama-c -json-compilation-database ${COMPILE_COMMANDS_JSON_PATH} ${SRC_FILES} -wp -wp-rte
     COMMENT "Running Frama-C wp and rte plugins on all files built"
     )
